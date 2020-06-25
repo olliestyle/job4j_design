@@ -18,7 +18,6 @@ notifications:
       - olliestyle1989@gmail.com
     on_success: never # default: change
     on_failure: always # default: always
-
 env:
   global:
-    CODECOV_TOKEN="d10867f7-4bad-44ae-bf36-be7679308c46"
+    - CODECOV_TOKEN="d10867f7-4bad-44ae-bf36-be7679308c46"
