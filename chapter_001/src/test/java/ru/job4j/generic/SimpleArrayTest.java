@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SimpleArrayTest {
 
@@ -19,6 +20,16 @@ public class SimpleArrayTest {
         simpleArray.add(2);
         simpleArray.add(3);
         simpleArray.add(4);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void whenNoElements() {
+        Iterator<Integer> iterator = simpleArray.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
     }
 
     @Test
@@ -66,5 +77,18 @@ public class SimpleArrayTest {
         assertThat(iterator.next(), is(3));
         assertThat(iterator.next(), is(4));
         assertThat(iterator.hasNext(), is(false));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void whenIteratorTest2() {
+        Iterator<Integer> iterator = simpleArray.iterator();
+        assertTrue(iterator.hasNext());
+        assertThat(iterator.next(), is(1));
+        assertThat(iterator.next(), is(2));
+        assertThat(iterator.next(), is(3));
+        assertThat(iterator.next(), is(4));
+        assertThat(iterator.hasNext(), is(false));
+        simpleArray.add(5);
+        iterator.next();
     }
 }
