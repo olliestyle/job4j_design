@@ -55,10 +55,6 @@ public class SimpleArray<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new SimpleArrayIterator<>(this, this.objects, index);
-    }
-
-    public int getIndex() {
-        return index;
+        return new SimpleArrayIterator<>(this.objects, index);
     }
 }

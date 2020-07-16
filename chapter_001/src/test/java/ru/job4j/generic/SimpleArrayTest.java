@@ -78,17 +78,4 @@ public class SimpleArrayTest {
         assertThat(iterator.next(), is(4));
         assertThat(iterator.hasNext(), is(false));
     }
-
-    @Test(expected = RuntimeException.class)
-    public void whenIteratorTest2() {
-        Iterator<Integer> iterator = simpleArray.iterator();
-        assertTrue(iterator.hasNext());
-        assertThat(iterator.next(), is(1));
-        assertThat(iterator.next(), is(2));
-        assertThat(iterator.next(), is(3));
-        assertThat(iterator.next(), is(4));
-        assertThat(iterator.hasNext(), is(false));
-        simpleArray.add(5);
-        iterator.next();
-    }
 }
