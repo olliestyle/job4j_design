@@ -40,9 +40,10 @@ public class SimpleArray<T> implements Iterable<T> {
         } else if (index == this.index - 1) {
             this.objects[index] = null;
         } else {
-            for (int i = index; i < this.index; i++) {
-                this.objects[i] = this.objects[i + 1];
-            }
+            System.arraycopy(this.objects, index + 1, this.objects, index, this.objects.length - 1 - index);
+//            for (int i = index; i < this.index; i++) {
+//                this.objects[i] = this.objects[i + 1];
+//            }
         }
     }
 
