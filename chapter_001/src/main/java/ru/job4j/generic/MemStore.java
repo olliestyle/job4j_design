@@ -8,6 +8,15 @@ public class MemStore<T extends Base> implements Store<T> {
 
     private final List<T> mem = new ArrayList<>();
 
+    private int findIndexById(String id) {
+        for (T t: mem) {
+            if (t.getId().equals(id)) {
+                return mem.indexOf(t);
+            }
+        }
+        return -1;
+    }
+
     @Override
     public void add(T model) {
         mem.add(model);
@@ -15,11 +24,16 @@ public class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public boolean replace(String id, T model) {
-        for (T t: mem) {
-            if (t.getId().equals(id)) {
-                mem.set(mem.indexOf(t), model);
-                return true;
-            }
+//        for (T t: mem) {
+//            if (t.getId().equals(id)) {
+//                mem.set(mem.indexOf(t), model);
+//                return true;
+//            }
+//        }
+        int res = findIndexById(id);
+        if (res != -1) {
+            mem.set(res, model);
+            return true;
         }
         return false;
     }
