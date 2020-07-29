@@ -9,9 +9,14 @@ public class MemStore<T extends Base> implements Store<T> {
     private final List<T> mem = new ArrayList<>();
 
     private int findIndexById(String id) {
-        for (T t: mem) {
-            if (t.getId().equals(id)) {
-                return mem.indexOf(t);
+//        for (T t: mem) {
+//            if (t.getId().equals(id)) {
+//                return mem.indexOf(t);
+//            }
+//        }
+        for (int i = 0; i < mem.size(); i++) {
+            if (mem.get(i).getId().equals(id)) {
+                return i;
             }
         }
         return -1;
