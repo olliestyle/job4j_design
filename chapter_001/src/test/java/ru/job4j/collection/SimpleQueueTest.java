@@ -26,6 +26,30 @@ public class SimpleQueueTest {
     }
 
     @Test
+    public void when3PushPoll() {
+        SimpleQueue<Integer> queue = new SimpleQueue<>();
+        queue.push(1);
+        queue.push(2);
+        queue.poll();
+        queue.push(3);
+        assertThat(queue.poll(), is(2));
+    }
+
+    @Test
+    public void whenManyPushPoll() {
+        SimpleQueue<Integer> queue = new SimpleQueue<>();
+        queue.push(1);
+        queue.push(2);
+        queue.poll();
+        queue.push(3);
+        queue.push(4);
+        queue.push(5);
+        queue.poll();
+        queue.poll();
+        assertThat(queue.poll(), is(4));
+    }
+
+    @Test
     public void when2PushPollPushPoll() {
         SimpleQueue<Integer> queue = new SimpleQueue<>();
         queue.push(1);
