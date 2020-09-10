@@ -61,4 +61,12 @@ public class SimpleArray<T> implements Iterable<T> {
         return this.size;
     }
 
+    @Override
+    public String toString() {
+        String result = "";
+        for (int i = 0; i < index; i++) {
+            result = result + container[i].toString() + " ";
+        }
+        return result;
+    }
 }
