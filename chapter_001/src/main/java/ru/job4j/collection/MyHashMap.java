@@ -1,16 +1,57 @@
 package ru.job4j.collection;
 
-import java.util.Arrays;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
-public class MyHashMap<K, V> implements Iterable<V> {
+public class MyHashMap<K, V> implements Iterable<MyHashMap.Node> {
 
     private int currentSize = 0;
     private int currentCapacity;
-    private Object[] hashArray;
+    private float loadFactor = 0.75f;
+    private Node[] hashArray;
     private int modCount = 0;
+
+    public static class Node<K, V> {
+        private K key;
+        private V value;
+
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public void setKey(K key) {
+            this.key = key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Node<?, ?> node = (Node<?, ?>) o;
+            return Objects.equals(key, node.key) && Objects.equals(value, node.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value);
+        }
+    }
 
     public int getCurrentCapacity() {
         return this.currentCapacity;
@@ -22,54 +63,71 @@ public class MyHashMap<K, V> implements Iterable<V> {
 
     public MyHashMap(int initialCapacity) {
         this.currentCapacity = initialCapacity;
-        hashArray = new Object[currentCapacity];
+        hashArray = new Node[currentCapacity];
     }
 
-    /**
-     * Return value, that lie between 0 and currentCapacity (inclusively) by % operator
-     * @param key
-     * @return
-     */
     private int hash(K key) {
-        return key.hashCode() % currentCapacity;
+        int h = key.hashCode();
+        return (key == null) ? 0 : h ^ (h >>> 16);
     }
 
-    /**
-     * Increase array capacity after it is half full
-     * @param key
-     * @param value
-     * @return
-     */
-    public boolean insert(K key, V value) {
-        if (currentSize > currentCapacity / 2) {
-            currentCapacity = currentCapacity * 2;
-            hashArray = Arrays.copyOf(hashArray, currentCapacity);
+    private int indexBucket(int hash, int currentCapacity) {
+        return hash & (currentCapacity - 1);
+    }
+
+    private void resize(int newCapacity) {
+        Node[] temp = new Node[newCapacity];
+        transfer(temp);
+        hashArray = temp;
+    }
+
+    private void transfer(Node[] nodes) {
+        for (Node node: hashArray) {
+            if (node != null) {
+                int hash = hash((K) node.key);
+                int index = indexBucket(hash, currentCapacity);
+                nodes[index] = node;
+            }
         }
-        int h = hash(key);
+    }
+
+    public boolean insert(K key, V value) {
+        if (currentSize > currentCapacity * loadFactor) {
+            currentCapacity *= 2;
+            resize(currentCapacity);
+        }
         boolean result = false;
-        if (hashArray[h] == null) {
-            hashArray[h] = value;
+        int hash = hash(key);
+        int index = indexBucket(hash, currentCapacity);
+        if (hashArray[index] == null) {
+            Node toInsert = new Node(key, value);
+            hashArray[index] = toInsert;
             currentSize++;
             modCount++;
+            result = true;
+        } else if (hashArray[index].key.equals(key)) {
+            hashArray[index].value = value;
             result = true;
         }
         return result;
     }
 
     public V get(K key) {
-        int h = hash(key);
-        if (hashArray[h] == null) {
-            throw new NoSuchElementException();
-        } else {
-            return (V) hashArray[h];
+        int hash = hash(key);
+        int index = indexBucket(hash, currentCapacity);
+        V toReturn = null;
+        if (hashArray[index] != null && hashArray[index].key.equals(key)) {
+            toReturn = (V) hashArray[index].value;
         }
+        return toReturn;
     }
 
     public boolean delete(K key) {
-        int h = hash(key);
+        int hash = hash(key);
+        int index = indexBucket(hash, currentCapacity);
         boolean result = false;
-        if (hashArray[h] != null) {
-            hashArray[h] = null;
+        if (hashArray[index] != null && hashArray[index].key.equals(key)) {
+            hashArray[index] = null;
             currentSize--;
             modCount--;
             result = true;
@@ -78,7 +136,7 @@ public class MyHashMap<K, V> implements Iterable<V> {
     }
 
     @Override
-    public Iterator<V> iterator() {
+    public Iterator<Node> iterator() {
         return new Iterator() {
 
             private int hasNextSize = currentSize;
@@ -92,7 +150,7 @@ public class MyHashMap<K, V> implements Iterable<V> {
             }
 
             @Override
-            public V next() {
+            public Node next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 } else if (expectedModCount != modCount) {
@@ -102,7 +160,7 @@ public class MyHashMap<K, V> implements Iterable<V> {
                     index++;
                     if (hashArray[i] != null) {
                         hasNextSize--;
-                        return (V) hashArray[i];
+                        return hashArray[i];
                     }
                 }
                 return null;
