@@ -107,6 +107,7 @@ public class MyHashMap<K, V> implements Iterable<MyHashMap.Node> {
             result = true;
         } else if (hashArray[index].key.equals(key)) {
             hashArray[index].value = value;
+            modCount++;
             result = true;
         }
         return result;
@@ -129,7 +130,7 @@ public class MyHashMap<K, V> implements Iterable<MyHashMap.Node> {
         if (hashArray[index] != null && hashArray[index].key.equals(key)) {
             hashArray[index] = null;
             currentSize--;
-            modCount--;
+            modCount++;
             result = true;
         }
         return result;
@@ -144,6 +145,17 @@ public class MyHashMap<K, V> implements Iterable<MyHashMap.Node> {
             private int expectedModCount = modCount;
             private int index = 0;
 
+            private Node findNext() {
+                for (int i = index; i < iteratorCapacity; i++) {
+                    index++;
+                    if (hashArray[i] != null) {
+                        hasNextSize--;
+                        return hashArray[i];
+                    }
+                }
+                return null;
+            }
+
             @Override
             public boolean hasNext() {
                 return hasNextSize > 0;
@@ -156,14 +168,7 @@ public class MyHashMap<K, V> implements Iterable<MyHashMap.Node> {
                 } else if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                for (int i = index; i < iteratorCapacity; i++) {
-                    index++;
-                    if (hashArray[i] != null) {
-                        hasNextSize--;
-                        return hashArray[i];
-                    }
-                }
-                return null;
+                return findNext();
             }
         };
     }
