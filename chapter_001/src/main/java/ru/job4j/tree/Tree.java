@@ -15,13 +15,11 @@ public class Tree<E> implements SimpleTree<E> {
     public boolean add(E parent, E child) {
         boolean result = false;
         Optional<Node<E>> par = findBy(parent);
-        if (par.isPresent()) {
-            ArrayList<E> elements = (ArrayList<E>) par.get().children.stream().map(n -> n.value).collect(Collectors.toList());
-            if (!elements.contains(child)) {
-                Node<E> toAdd = new Node<>(child);
-                par.get().children.add(toAdd);
-                result = true;
-            }
+        Optional<Node<E>> chi = findBy(child);
+        if (par.isPresent() && !chi.isPresent()) {
+            Node<E> toAdd = new Node<>(child);
+            par.get().children.add(toAdd);
+            result = true;
         }
         return result;
     }
