@@ -105,7 +105,7 @@ public class MyHashMap<K, V> implements Iterable<MyHashMap.Node> {
             currentSize++;
             modCount++;
             result = true;
-        } else if (hashArray[index].key.equals(key)) {
+        } else if (Objects.equals(hashArray[index].key, key)) {
             hashArray[index].value = value;
             modCount++;
             result = true;
