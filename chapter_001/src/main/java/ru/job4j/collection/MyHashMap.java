@@ -117,7 +117,7 @@ public class MyHashMap<K, V> implements Iterable<MyHashMap.Node> {
         int hash = hash(key);
         int index = indexBucket(hash, currentCapacity);
         V toReturn = null;
-        if (hashArray[index] != null && hashArray[index].key.equals(key)) {
+        if (hashArray[index] != null && Objects.equals(hashArray[index].key, key)) {
             toReturn = (V) hashArray[index].value;
         }
         return toReturn;
@@ -127,7 +127,7 @@ public class MyHashMap<K, V> implements Iterable<MyHashMap.Node> {
         int hash = hash(key);
         int index = indexBucket(hash, currentCapacity);
         boolean result = false;
-        if (hashArray[index] != null && hashArray[index].key.equals(key)) {
+        if (hashArray[index] != null && Objects.equals(hashArray[index].key, key)) {
             hashArray[index] = null;
             currentSize--;
             modCount++;
