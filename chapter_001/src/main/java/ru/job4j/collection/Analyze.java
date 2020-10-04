@@ -1,47 +1,30 @@
 package ru.job4j.collection;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Analyze {
 
     public static Info diff(List<User> previous, List<User> current) {
 
         Info info = new Info(0, 0, 0);
-        Map<Integer, String> previousMap = new HashMap<>();
-        Map<Integer, String> currentMap = new HashMap<>();
+        Map<Integer, String> currentMap = current.stream().collect(Collectors.toMap(user -> user.id, user -> user.name));
 
         for (User user: previous) {
-            previousMap.put(user.id, user.name);
-        }
-
-        for (User user: current) {
-            currentMap.put(user.id, user.name);
-        }
-
-        // Эту проверку можно исключить, но без неё зря будут работать следующие циклы, а с ней получается два return'а в методе.
-        // Что хуже - читаемость кода или производительность ?
-        if (Objects.equals(previousMap.entrySet(), currentMap.entrySet())) {
-            return info;
-        }
-
-        for (Integer i: previousMap.keySet()) {
-            if (currentMap.containsKey(i)) {
-                if (!Objects.equals(currentMap.get(i), previousMap.get(i))) {
+            if (currentMap.containsKey(user.id)) {
+                if (!Objects.equals(user.name, currentMap.get(user.id))) {
                     info.changed++;
                 }
+                currentMap.remove(user.id);
             } else {
                 info.deleted++;
             }
         }
 
-        for (Integer i: currentMap.keySet()) {
-            if (!previousMap.containsKey(i)) {
-                info.added++;
-            }
-        }
+        info.added = currentMap.size();
+
         return info;
     }
 
