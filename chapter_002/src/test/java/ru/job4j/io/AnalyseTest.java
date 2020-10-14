@@ -3,24 +3,35 @@ package ru.job4j.io;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AnalyseTest {
 
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
     List<String> list = new ArrayList<>();
 
     @Test
-    public void whenLog() {
+    public void whenLog() throws IOException {
+        File source = folder.newFile("source.log");
+        File target = folder.newFile("target.csv");
         Analyse analyse = new Analyse();
-        analyse.unavailable("./data/server1.log", "./data/unavailable1.csv");
-        try (BufferedReader in = new BufferedReader(new FileReader("./data/unavailable1.csv"))) {
+        String s;
+        try (PrintWriter out = new PrintWriter(source);
+        BufferedReader in = new BufferedReader(new FileReader("./data/server1.log"))) {
+            while ((s = in.readLine()) != null) {
+                out.write(s + "\n");
+            }
+        }
+        analyse.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
+        try (BufferedReader in = new BufferedReader(new FileReader(target))) {
             in.lines().forEach(list::add);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -32,10 +43,19 @@ public class AnalyseTest {
     }
 
     @Test
-    public void whenLog2() {
+    public void whenLog2() throws IOException {
+        File source = folder.newFile("source.log");
+        File target = folder.newFile("target.csv");
         Analyse analyse = new Analyse();
-        analyse.unavailable("./data/server2.log", "./data/unavailable1.csv");
-        try (BufferedReader in = new BufferedReader(new FileReader("./data/unavailable1.csv"))) {
+        String s;
+        try (PrintWriter out = new PrintWriter(source);
+             BufferedReader in = new BufferedReader(new FileReader("./data/server2.log"))) {
+            while ((s = in.readLine()) != null) {
+                out.write(s + "\n");
+            }
+        }
+        analyse.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
+        try (BufferedReader in = new BufferedReader(new FileReader(target))) {
             in.lines().forEach(list::add);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
