@@ -11,7 +11,6 @@ public class Analyse {
             boolean isOn = true;
             String s;
             while ((s = in.readLine()) != null) {
-                in.readLine();
                 String[] fromS = s.split(" ");
                 if (isOn) {
                     if (fromS[0].equals("400") || fromS[0].equals("500")) {
