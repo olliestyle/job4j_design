@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Search {
     public static void main(String[] args) throws IOException {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("Root folder is null. Usage java -jar dir.jar ROOT_FOLDER EXTENSION_TO_FIND");
+        if (args[0] == null || args[1] == null) {
+            throw new IllegalArgumentException("Root folder or extension to find is null. Use java -jar dir.jar ROOT_FOLDER EXTENSION_TO_FIND");
         }
         Path start = Paths.get(args[0]);
         search(start, args[1]).forEach(System.out::println);
