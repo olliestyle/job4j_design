@@ -16,6 +16,9 @@ public class ArgsName {
         }
         for (String s: args) {
             int index = s.indexOf("=");
+            if (index == -1) {
+                throw new IllegalArgumentException("Arguments must match the following pattern \"-****=****\"");
+            }
             values.put(s.substring(1, index), s.substring(index + 1));
         }
     }
