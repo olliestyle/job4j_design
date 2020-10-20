@@ -39,16 +39,20 @@ public class Zip {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        ArgZip argZip = new ArgZip(args);
-        Path root = Paths.get(argZip.getDirectory());
-        SearchFiles searchFiles = new SearchFiles(p -> !p.toFile().getName().endsWith(argZip.getExclude()));
+    public static List<File> getFileList(ArgZip args) throws IOException {
+        Path root = Paths.get(args.getDirectory());
+        SearchFiles searchFiles = new SearchFiles(p -> !p.toFile().getName().endsWith(args.getExclude()));
         Files.walkFileTree(root, searchFiles);
         List<Path> pathList = searchFiles.getPaths();
         List<File> fileList = new ArrayList<>();
         for (Path path: pathList) {
             fileList.add(path.toFile());
         }
-        new Zip().packFiles(fileList, new File(argZip.getOutput()));
+        return fileList;
+    }
+
+    public static void main(String[] args) throws IOException {
+        ArgZip argZip = new ArgZip(args);
+        new Zip().packFiles(getFileList(argZip), new File(argZip.getOutput()));
     }
 }
