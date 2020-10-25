@@ -9,6 +9,7 @@ public class ConsoleChat {
     private static final String OUT = "закончить";
     private static final String STOP = "стоп";
     private static final String CONTINUE = "продолжить";
+    private List<String> answers = new ArrayList<>();
 
     public ConsoleChat(String logPath, String botAnswers) {
         this.logPath = logPath;
@@ -17,11 +18,12 @@ public class ConsoleChat {
 
     public void run() {
         boolean isBotAnswer = true;
+        answersToList(botAnswers);
         StringJoiner toLog = new StringJoiner("\n");
-        String answerContinue = "Теперь бот будет отвечать Вам. Введить \"стоп\", чтобы бот перестал с Вами общаться";
-        String answerContinueSecond = "Бот не переставал общаться с Вами. Введить \"стоп\", чтобы бот перестал с Вами общаться";
-        String answerStop = "Теперь бот будет молчать. Введить \"продолжить\", чтобы бот с Вами продолжил общаться";
-        String answerStopSecond = "Бот уже не ведёт с Вами беседу. Введить \"продолжить\", чтобы бот с Вами продолжил общаться";
+        String answerContinue = "Теперь бот будет отвечать Вам. Введите \"стоп\", чтобы бот перестал с Вами общаться";
+        String answerContinueSecond = "Бот не переставал общаться с Вами. Введите \"стоп\", чтобы бот перестал с Вами общаться";
+        String answerStop = "Теперь бот будет молчать. Введите \"продолжить\", чтобы бот с Вами продолжил общаться";
+        String answerStopSecond = "Бот уже не ведёт с Вами беседу. Введите \"продолжить\", чтобы бот с Вами продолжил общаться";
         System.out.println("Добро пожаловать к нашему боту. Вам доступен следующий функционал:\n"
                 + "1. Общение с ботом\n"
                 + "2. При вводе слова «стоп», бот прекратит Вам отвечать, но Вы сможете и дальше писать сообщения\n"
@@ -30,6 +32,7 @@ public class ConsoleChat {
                 + "Начнём? Введите сообщение");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
+        toLog.add("Пользователь:\t" + input);
         while (!input.equals(OUT)) {
                 switch (input) {
                     case (CONTINUE):
@@ -62,7 +65,7 @@ public class ConsoleChat {
                         break;
                     default:
                         if (isBotAnswer) {
-                            String answerBot = getAnswer(botAnswers);
+                            String answerBot = getAnswer();
                             System.out.println(answerBot);
                             toLog.add("         Бот:\t" + answerBot);
                             System.out.println("Введите следующее сообщение");
@@ -82,25 +85,27 @@ public class ConsoleChat {
         }
     }
 
-    public String getAnswer(String botAnswers) {
-        String answerToReturn = "I don't know!";
+    private void answersToList(String botAnswers) {
         try (BufferedReader reader = new BufferedReader(new FileReader(botAnswers))) {
             String answer;
-            List<String> answers = new ArrayList<>();
             while ((answer = reader.readLine()) != null) {
                 answers.add(answer);
-            }
-            if (!answers.isEmpty()) {
-                answerToReturn = answers.get(new Random().nextInt(answers.size()));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getAnswer() {
+        String answerToReturn = "I don't know!";
+            if (!answers.isEmpty()) {
+                answerToReturn = answers.get(new Random().nextInt(answers.size()));
+            }
         return answerToReturn;
     }
 
     public static void main(String[] args) {
-        ConsoleChat cc = new ConsoleChat("./chapter_002/src/data/logBot.txt", "./chapter_002/src/data/botAnswers.txt");
+        ConsoleChat cc = new ConsoleChat("./chapter_002/src/data/logBot1.txt", "./chapter_002/src/data/botAnswers.txt");
         cc.run();
     }
 }
