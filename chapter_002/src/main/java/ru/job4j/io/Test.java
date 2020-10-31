@@ -29,6 +29,11 @@ public class Test implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "Test{" + "i=" + i + ", string='" + string + '\'' + '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(i, string);
     }
