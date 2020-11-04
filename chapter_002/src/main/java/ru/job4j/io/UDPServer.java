@@ -1,5 +1,12 @@
 package ru.job4j.io;
 
+import de.javawi.jstun.attribute.ChangeRequest;
+import de.javawi.jstun.attribute.MappedAddress;
+import de.javawi.jstun.attribute.MessageAttribute;
+import de.javawi.jstun.attribute.MessageAttributeParsingException;
+import de.javawi.jstun.header.MessageHeader;
+import de.javawi.jstun.util.UtilityException;
+
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -23,6 +30,7 @@ public class UDPServer {
         try {
             // сажаем сервер на порт 11111
             UDPServer server = new UDPServer(11111);
+            server.myIPAndPort();
             server.loadQuotesFromFile("Quotes.txt");
             server.service();
         } catch (SocketException ex) {
@@ -31,16 +39,57 @@ public class UDPServer {
             System.out.println("I/O error: " + ex.getMessage());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (UtilityException e) {
+            e.printStackTrace();
         }
+    }
+
+    // Этим методом узнаём айпи и порт за NAT нашего сокета, который сидит на порту 11111
+    private void myIPAndPort() throws IOException, UtilityException {
+        MessageHeader sendMH = new MessageHeader(MessageHeader.MessageHeaderType.BindingRequest);
+        // sendMH.generateTransactionID();
+
+        // add an empty ChangeRequest attribute. Not required by the
+        // standard,
+        // but JSTUN server requires it
+
+        ChangeRequest changeRequest = new ChangeRequest();
+        sendMH.addMessageAttribute(changeRequest);
+
+        byte[] data = sendMH.getBytes();
+        socket.setReuseAddress(true);
+
+        DatagramPacket p = new DatagramPacket(data, data.length, InetAddress.getByName("stun.b2b2c.ca"), 3478);
+        socket.send(p);
+
+        DatagramPacket rp;
+
+        rp = new DatagramPacket(new byte[512], 512);
+
+        socket.receive(rp);
+        MessageHeader receiveMH = new MessageHeader(MessageHeader.MessageHeaderType.BindingResponse);
+        // System.out.println(receiveMH.getTransactionID().toString() + "Size:"
+        // + receiveMH.getTransactionID().length);
+        try {
+            receiveMH.parseAttributes(rp.getData());
+        } catch (MessageAttributeParsingException e) {
+            e.printStackTrace();
+        }
+        MappedAddress ma = (MappedAddress) receiveMH
+                .getMessageAttribute(MessageAttribute.MessageAttributeType.MappedAddress);
+        System.out.println(ma.getAddress() + " " + ma.getPort());
+        System.out.println(socket.getInetAddress() + " " + socket.getPort() + " " + socket.getLocalPort());
     }
 
     private void service() throws IOException, ClassNotFoundException {
         while (true) {
             // ждём запрос от клиента
-            DatagramPacket request = new DatagramPacket(new byte[1024], 1024);
-            socket.receive(request);
+            DatagramPacket request = new DatagramPacket(new byte[1024], 1024, InetAddress.getByName("194.39.99.4"), 21510);
+            socket.send(request);
+            DatagramPacket response = new DatagramPacket(new byte[1024], 1024);
+            socket.receive(response);
             // принимаем и выводим инфо, которая была в запросе от клиента
-            byte[] dataFromClient = request.getData();
+            byte[] dataFromClient = response.getData();
             ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(dataFromClient));
             Test test2 = (Test) objectInputStream.readObject();
             System.out.println("Info from client is - " + test2);
@@ -54,8 +103,8 @@ public class UDPServer {
             int clientPort = request.getPort();
 
             // формируем и отправляем ответ клиенту
-            DatagramPacket response = new DatagramPacket(buffer, buffer.length, clientAddress, clientPort);
-            socket.send(response);
+            DatagramPacket response1 = new DatagramPacket(buffer, buffer.length, clientAddress, clientPort);
+            socket.send(response1);
         }
     }
 
