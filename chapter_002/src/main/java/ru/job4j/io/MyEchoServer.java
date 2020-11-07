@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class EchoServer {
+public class MyEchoServer {
     // Создать объект типа Socket на стороне клиента
     // и воссоздать его с помощью ServerSocket на стороне сервера – вот необходимый минимум для соединения.
     public static void main(String[] args) throws IOException {
