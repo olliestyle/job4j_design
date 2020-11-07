@@ -32,6 +32,8 @@ class ThreadEchoHandler implements Runnable {
                     done = true;
                 }
             }
+            inputStream.close();
+            outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
