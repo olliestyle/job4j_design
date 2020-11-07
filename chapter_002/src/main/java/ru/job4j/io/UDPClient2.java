@@ -15,11 +15,10 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-public class UDPClient {
-
+public class UDPClient2 {
     DatagramSocket socket;
 
-    public UDPClient() throws SocketException {
+    public UDPClient2() throws SocketException {
         socket = new DatagramSocket();
         socket.setReuseAddress(true);
     }
@@ -30,20 +29,20 @@ public class UDPClient {
         String hostname = "194.39.99.4";
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
              ObjectOutputStream outputStream = new ObjectOutputStream(out)) {
-            UDPClient udpClient = new UDPClient();
+            UDPClient2 udpClient2 = new UDPClient2();
             Test test = new Test(3, "hello");
             outputStream.writeObject(test);
             byte[] data = out.toByteArray();
             InetAddress address = InetAddress.getByName(hostname);
-            udpClient.myIPAndPort();
+            udpClient2.myIPAndPort();
 
             while (true) {
 //                DatagramPacket request = new DatagramPacket(data, data.length, address, 11111);
                 DatagramPacket request = new DatagramPacket(data, data.length, address, 29485);
-                udpClient.socket.send(request);
+                udpClient2.socket.send(request);
                 byte[] buffer = new byte[1024];
                 DatagramPacket response = new DatagramPacket(buffer, buffer.length);
-                udpClient.socket.receive(response);
+                udpClient2.socket.receive(response);
                 String quote = new String(buffer, 0, response.getLength());
 
                 System.out.println(quote);
