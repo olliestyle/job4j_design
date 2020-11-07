@@ -17,7 +17,7 @@ class ThreadEchoHandler implements Runnable {
 
     @Override
     public void run() {
-        try (clientSocket) {
+        try {
             InputStream inputStream = clientSocket.getInputStream();
             OutputStream outputStream = clientSocket.getOutputStream();
 
@@ -32,10 +32,9 @@ class ThreadEchoHandler implements Runnable {
                     done = true;
                 }
             }
-            inputStream.close();
-            outputStream.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 }
