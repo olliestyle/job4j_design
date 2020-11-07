@@ -1,9 +1,11 @@
 package ru.job4j.io;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.Socket;
 
-public class SocketTest {
+public class SocketTest2 {
     public static void main(String[] args) {
         try {
             // Connect to the server
@@ -19,8 +21,8 @@ public class SocketTest {
 //            out.println("Host: www.webcode.me");
 //            out.println("");
 //            out.flush();
-            out.println("From client one");
-            out.println("ololo client one");
+            out.println("From client two");
+            out.println("ololo client two");
             out.println("BYE");
 
             // Read data from the server until we finish reading the document
