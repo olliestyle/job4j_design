@@ -8,10 +8,23 @@ public class UsageLog4j {
     private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
 
     public static void main(String[] args) {
-        LOG.trace("trace message");
-        LOG.debug("debug message");
-        LOG.info("info message");
-        LOG.warn("warn message");
-        LOG.error("error message");
+        boolean a = true;
+        byte b = 127;
+        short c = 32767;
+        char d = 'd';
+        int e = 123123123;
+        float f = 372199f;
+        long g = 1231225381L;
+        double h = 827182918D;
+
+        LOG.debug("primitive types :\n"
+                + " boolean a = {}\n"
+                + " byte b = {}\n"
+                + " short c = {}\n"
+                + " char d = {}\n"
+                + " int e = {}\n"
+                + " float f = {}\n"
+                + " long g = {}\n"
+                + " double h = {}\n", a, b, c, d, e, f, g, h);
     }
 }
