@@ -6,8 +6,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EchoServer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
+
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(15656)) {
             boolean done = false;
@@ -27,12 +32,15 @@ public class EchoServer {
                         }
                         str = bufferedReader.readLine();
                     }
+                    if (answer.equals("exception")) {
+                        throw new IOException();
+                    }
                     outputStream.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                     outputStream.write(answer.getBytes());
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Exception in main method", e);
         }
     }
 }
