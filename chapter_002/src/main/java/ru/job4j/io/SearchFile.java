@@ -1,15 +1,12 @@
 package ru.job4j.io;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
+import java.util.regex.Pattern;
 
 /**
  * 1. Создать программу для поиска файла.
@@ -34,37 +31,39 @@ public class SearchFile {
     }
 
     private void writeOutput(List<File> fileList, File file) {
-        StringJoiner stringJoiner = new StringJoiner("\n");
-        for (File fileFrom: fileList) {
-            stringJoiner.add(fileFrom.toString());
-        }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-            bw.write(stringJoiner.toString());
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)))) {
+            for (File fileFrom: fileList) {
+                pw.write(fileFrom.toString() + "\n");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private List<File> getFileList(ArgSearch argSearch) throws IOException {
-        Path root = Paths.get(argSearch.getDirectory());
+    private SearchFiles setPredicate(String choice, String getToSearch) {
         SearchFiles searchFiles = null;
-        String toSearch = argSearch.getToSearch();
-        switch (argSearch.getChoice()) {
+        switch (choice) {
             case("f"):
-                searchFiles = new SearchFiles(p -> p.toFile().getName().equals(toSearch));
+                searchFiles = new SearchFiles(p -> p.toFile().getName().equals(getToSearch));
                 break;
             case("m"):
-                String maskName = toSearch.substring(0, toSearch.indexOf(".")).replaceAll("\\*", "");
-                String maskExt = toSearch.substring(toSearch.indexOf(".") + 1).replaceAll("\\*", "");
+                String maskName = getToSearch.substring(0, getToSearch.indexOf(".")).replaceAll("\\*", "");
+                String maskExt = getToSearch.substring(getToSearch.indexOf(".") + 1).replaceAll("\\*", "");
                 searchFiles = new SearchFiles(p -> p.toFile().getName().contains(maskName) && p.toFile().getName().contains(maskExt));
                 break;
             case("r"):
-                String reg = argSearch.getToSearch();
-                searchFiles = new SearchFiles(p -> p.toFile().getName().matches(reg));
+                Pattern pattern = Pattern.compile(getToSearch);
+                searchFiles = new SearchFiles(p -> pattern.matcher(p.toFile().getName()).matches());
                 break;
             default:
                 break;
         }
+        return searchFiles;
+    }
+
+    private List<File> getFileList(ArgSearch argSearch) throws IOException {
+        Path root = Paths.get(argSearch.getDirectory());
+        SearchFiles searchFiles = setPredicate(argSearch.getChoice(), argSearch.getToSearch());
         Files.walkFileTree(root, searchFiles);
         List<Path> pathList = searchFiles.getPaths();
         List<File> fileList = new ArrayList<>();
