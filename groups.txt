@@ -1,0 +1,27 @@
+create database university;
+create table groups (
+    id serial primary key,
+    group_number int,
+    number_of_students int,
+    name_of_group text,
+    creation_date date,
+    paid_education boolean
+);
+insert into groups (group_number,
+                    number_of_students,
+                    name_of_group,
+                    creation_date,
+                    paid_education)
+                    values
+                    (
+                    1942,
+                     25,
+                     'Санки',
+                     '2009-06-01',
+                     true
+                    );
+select * from groups;
+update groups set creation_date='2010-07-02', name_of_group='Носороги';
+select * from groups;
+delete from groups;
+select * from groups;
