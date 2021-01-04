@@ -34,13 +34,13 @@ VALUES ('audi_a6', 1, 2, 2), ('audi_a7', 3, 3, 2), ('lada_vesta', 1, 5, 1), ('pe
        ('bmw_x5', 5, 2, 2), ('renault_sandero', 2, 1, 1), ('mazda_3', 1, 3, 4), ('fiat', 1, 1, 1);
 
 -- 1. Вывести список всех машин и все привязанные к ним детали.
-select * from Car;
+select Car.model, Body.type, Engine.type, Transmission.type from Car
+    join Body on Car.body_id = Body.id
+    join Engine on Car.engine_id = Engine.id
+    join Transmission on Car.transmission_id = Transmission.id;
 -- 2. Вывести отдельно детали, которые не используются в машине - кузов
-select Body.type as bodytype_not_used from Body full outer join Car on Body.id = Car.body_id where Car.model is null;
-select * from Body left join Car on Body.id = Car.body_id where Car.model is null;
+select Body.type as body_not_used from Body left join Car on Body.id = Car.body_id where Car.model is null;
 -- 3. Вывести отдельно детали, которые не используются в машине - двигатель
-select Engine.type as engine_not_used from Engine full outer join Car on Engine.id = Car.engine_id where Car.model is null;
-select * from Engine left join Car on Engine.id = Car.engine_id where Car.model is null;
+select Engine.type as engine_not_used from Engine left join Car on Engine.id = Car.engine_id where Car.model is null;
 -- 4. Вывести отдельно детали, которые не используются в машине - коробка передач
-select Transmission.type as transmission_not_used from Transmission full outer join Car on Transmission.id = Car.transmission_id where Car.model is null;
-select * from Car right join Transmission on Car.transmission_id = Transmission.id where Car.transmission_id is null;
+select Transmission.type as transmission_not_used from Car right join Transmission on Car.transmission_id = Transmission.id where Car.model is null;
