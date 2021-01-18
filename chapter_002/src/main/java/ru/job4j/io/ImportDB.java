@@ -21,7 +21,9 @@ public class ImportDB {
         try (BufferedReader br = new BufferedReader(new FileReader(dump))) {
             br.lines().forEach(user -> {
                 String[] s = user.split(";");
-                users.add(new User(s[0], s[1]));
+                if (s.length == 2) {
+                    users.add(new User(s[0], s[1]));
+                }
             });
         } catch (IOException e) {
             e.printStackTrace();
