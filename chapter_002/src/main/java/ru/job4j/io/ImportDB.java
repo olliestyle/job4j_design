@@ -31,7 +31,7 @@ public class ImportDB {
         return users;
     }
 
-    public void save(List<User>users) throws ClassNotFoundException, SQLException {
+    public void save(List<User> users) throws ClassNotFoundException, SQLException {
         Class.forName(config.getProperty("jdbc.driver"));
         try (Connection con = DriverManager.getConnection(
                 config.getProperty("jdbc.url"),
@@ -60,7 +60,7 @@ public class ImportDB {
             this.name = name;
         }
 
-        public static void main(String[] args) throws Exception{
+        public static void main(String[] args) throws Exception {
             Properties config = new Properties();
             try (FileInputStream fis = new FileInputStream("./app.properties")) {
                 config.load(fis);

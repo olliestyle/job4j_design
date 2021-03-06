@@ -5,13 +5,14 @@ import java.util.*;
 
 public class ConsoleChat {
     private final String logPath;
-    private final String botAnswers;
+//    private final String botAnswers;
+    private final InputStream botAnswers;
     private static final String OUT = "закончить";
     private static final String STOP = "стоп";
     private static final String CONTINUE = "продолжить";
     private List<String> answers = new ArrayList<>();
 
-    public ConsoleChat(String logPath, String botAnswers) {
+    public ConsoleChat(String logPath, InputStream botAnswers) {
         this.logPath = logPath;
         this.botAnswers = botAnswers;
     }
@@ -85,8 +86,8 @@ public class ConsoleChat {
         }
     }
 
-    private void answersToList(String botAnswers) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(botAnswers))) {
+    private void answersToList(InputStream botAnswers) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(botAnswers))) {
             String answer;
             while ((answer = reader.readLine()) != null) {
                 answers.add(answer);
@@ -105,7 +106,7 @@ public class ConsoleChat {
     }
 
     public static void main(String[] args) {
-        ConsoleChat cc = new ConsoleChat("./chapter_002/src/data/logBot1.txt", "./chapter_002/src/data/botAnswers.txt");
+        ConsoleChat cc = new ConsoleChat("logBot.txt", ConsoleChat.class.getClassLoader().getResourceAsStream("botAnswers.txt"));
         cc.run();
     }
 }
