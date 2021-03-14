@@ -34,15 +34,28 @@ public class User {
 
     @Override
     protected void finalize() throws Throwable {
-        System.out.println("Removed by GC " + q + " user" + ". Deleted = " + deleted++);
+//        System.out.println("Removed by GC " + q + " user" + ". Deleted = " + deleted++);
     }
 
     public static void main(String[] args) throws InterruptedException {
         info();
-        //780 and 800
-        for (int i = 0; i < 780; i++) {
-            new User(i);
+//        for (int i = 0; i < 1000000; i++) {
+//            new User(i);
+//        }
+        double i = 0;
+        while (true) {
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
+            new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);new User(i++);
         }
-        info();
+//        info();
     }
 }
