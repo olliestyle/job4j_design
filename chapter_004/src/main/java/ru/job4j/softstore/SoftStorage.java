@@ -10,14 +10,14 @@ import java.util.StringJoiner;
 
 public class SoftStorage {
 
-    Map<String, SoftReference<StringJoiner>> softStorage = new HashMap<>();
+    private Map<String, SoftReference<StringJoiner>> softStorage = new HashMap<>();
 
     public SoftStorage() {
 
     }
 
     private StringJoiner put(String fileName) {
-        StringJoiner stringJoiner = new StringJoiner("\n");
+        StringJoiner stringJoiner = new StringJoiner(System.lineSeparator());
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String s = "";
             while ((s = br.readLine()) != null) {
