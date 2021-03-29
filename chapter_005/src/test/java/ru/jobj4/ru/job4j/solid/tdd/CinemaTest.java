@@ -35,12 +35,40 @@ public class CinemaTest {
         assertEquals(0, sessions.size());
     }
 
-    @Test(expected = CinemaDontWorkException.class)
-    public void whenCinemaDontWork() {
+    @Test(expected = IllegalArgumentException.class)
+    public void whenTicketOnSamePlace() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
         Calendar date = Calendar.getInstance();
-        date.set(2021, 1, 1, 07, 00);
-        Ticket ticket = cinema.buy(account, 1 , 1, date);
+        date.set(2021, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+        Ticket ticket2 = cinema.buy(account, 1, 1, date);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenOldDate() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2011, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenBadRow() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2011, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 999, 1, date);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenBadColumn() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2011, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 1, 999, date);
     }
 }
