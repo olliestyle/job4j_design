@@ -1,6 +1,7 @@
-package ru.jobj4.ru.job4j.solid.tdd;
+package ru.job4j.solid.tdd;
 
 import org.junit.Test;
+import ru.job4j.solid.tdd.SimpleGenerator;
 
 import java.util.HashMap;
 import java.util.IllegalFormatException;
