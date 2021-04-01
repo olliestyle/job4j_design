@@ -4,8 +4,8 @@ import java.util.function.Predicate;
 
 public class ReportAccountant implements Report {
 
-    Store store;
-    SalaryConverter salaryConverter;
+    private Store store;
+    private SalaryConverter salaryConverter;
 
     public ReportAccountant(Store store, SalaryConverter salaryConverter) {
         this.store = store;

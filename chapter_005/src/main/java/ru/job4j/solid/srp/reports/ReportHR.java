@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 
 public class ReportHR implements Report {
 
-    Store store;
+    private Store store;
 
     public ReportHR(Store store) {
         this.store = store;

@@ -3,7 +3,8 @@ package ru.job4j.solid.srp.reports;
 import java.util.function.Predicate;
 
 public class ReportProgrammers implements Report {
-    Store store;
+
+    private Store store;
 
     public ReportProgrammers(Store store) {
         this.store = store;
