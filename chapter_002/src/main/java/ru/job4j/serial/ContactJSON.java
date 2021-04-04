@@ -16,12 +16,12 @@ import java.nio.file.Files;
  * С помощью интерфейса Externalizable можно реализовать собственный алгоритм сериализации/десериализации,
  * для этого нужно переопределить два обязательных метода — writeExternal() и readExternal().
  */
-public class Contact implements Serializable {
+public class ContactJSON implements Serializable {
     private static final long serialVersionUID = 1L;
     private final int zipCode;
     private final String phone;
 
-    public Contact(int zipCode, String phone) {
+    public ContactJSON(int zipCode, String phone) {
         this.zipCode = zipCode;
         this.phone = phone;
     }
@@ -43,22 +43,22 @@ public class Contact implements Serializable {
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        final Contact contact = new Contact(123456, "+7 (111) 111-11-11");
+        final ContactJSON contactJSON = new ContactJSON(123456, "+7 (111) 111-11-11");
 
         /* Запись объекта в файл */
         File tempFile = Files.createTempFile(null, null).toFile();
         try (FileOutputStream fos = new FileOutputStream(tempFile);
              ObjectOutputStream oos =
                      new ObjectOutputStream(fos)) {
-            oos.writeObject(contact);
+            oos.writeObject(contactJSON);
         }
 
         /* Чтение объекта из файла */
         try (FileInputStream fis = new FileInputStream(tempFile);
              ObjectInputStream ois =
                      new ObjectInputStream(fis)) {
-            final Contact contactFromFile = (Contact) ois.readObject();
-            System.out.println(contactFromFile);
+            final ContactJSON contactJSONFromFile = (ContactJSON) ois.readObject();
+            System.out.println(contactJSONFromFile);
         }
     }
 }
