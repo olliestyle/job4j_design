@@ -129,6 +129,10 @@ public class PersonJSON {
             this.phone = phone;
         }
 
+        public String getPhone() {
+            return this.phone;
+        }
+
         @Override
         public String toString() {
             return "Contact{"

@@ -34,6 +34,10 @@ public class UserJSON {
             this.relative = relative;
         }
 
+        public String getRelative() {
+            return relative;
+        }
+
         @Override
         public String toString() {
             return "Relative{" +
@@ -54,6 +58,14 @@ public class UserJSON {
         public School(int number, boolean isGraduate) {
             this.number = number;
             this.isGraduate = isGraduate;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        public boolean isGraduate() {
+            return isGraduate;
         }
 
         @Override
@@ -92,12 +104,12 @@ public class UserJSON {
         userJSONObject.put("age", userJSON.age);
         userJSONObject.put("isWork", userJSON.isWork);
         userJSONObject.put("name", userJSON.name);
-        JSONObject jsonSchool = new JSONObject(userJSON.school.toJsonString());
+        JSONObject jsonSchool = new JSONObject(userJSON.school);
         userJSONObject.put("school", jsonSchool);
 
         JSONArray relative = new JSONArray();
         for (Relative r: userJSON.relatives) {
-            relative.put(new JSONObject(r.toJsonString()));
+            relative.put(new JSONObject(r));
         }
         userJSONObject.put("relatives", relative);
 
