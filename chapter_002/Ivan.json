@@ -1,7 +1,7 @@
 {
-"age":25,
-"isWork":true,
-"name":"Jack",
-"school": {"number":222,"isGraduate":false},
-"relatives":[{"relative":"mother"},{"relative":"father"}]
+  "age":25,
+  "isWork":true,
+  "name":"Jack",
+  "school":{"number":222,"isGraduate":false},
+  "relatives":[{"relative":"mother"},{"relative":"father"},{"relative":"mother"}]
 }
