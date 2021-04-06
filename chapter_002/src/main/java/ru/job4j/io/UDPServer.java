@@ -81,10 +81,10 @@ public class UDPServer {
     public void service() throws IOException, ClassNotFoundException {
         while (true) {
             // ждём запрос от клиента
-            DatagramPacket request = new DatagramPacket(new byte[1024], 1024, InetAddress.getByName("194.39.99.4"), 3084);
-            DatagramPacket request2 = new DatagramPacket(new byte[1024], 1024, InetAddress.getByName("194.39.99.4"), 3076);
+            DatagramPacket request = new DatagramPacket(new byte[1024], 1024, InetAddress.getByName("5.8.39.124"), 7685);
+//            DatagramPacket request2 = new DatagramPacket(new byte[1024], 1024, InetAddress.getByName("5.8.39.124"), 7743);
             socket.send(request);
-            socket.send(request2);
+//            socket.send(request2);
             DatagramPacket response = new DatagramPacket(new byte[1024], 1024);
             socket.receive(response);
             // принимаем и выводим инфо, которая была в запросе от клиента
@@ -99,15 +99,15 @@ public class UDPServer {
 
             // выясняем с какого адреса был послан запрос
             InetAddress clientAddress = request.getAddress();
-            InetAddress clientAddress2 = request2.getAddress();
+//            InetAddress clientAddress2 = request2.getAddress();
             int clientPort = request.getPort();
-            int clientPort2 = request2.getPort();
+//            int clientPort2 = request2.getPort();
 
             // формируем и отправляем ответ клиенту
             DatagramPacket response1 = new DatagramPacket(buffer, buffer.length, clientAddress, clientPort);
-            DatagramPacket response2 = new DatagramPacket(buffer, buffer.length, clientAddress2, clientPort2);
+//            DatagramPacket response2 = new DatagramPacket(buffer, buffer.length, clientAddress2, clientPort2);
             socket.send(response1);
-            socket.send(response2);
+//            socket.send(response2);
         }
     }
 

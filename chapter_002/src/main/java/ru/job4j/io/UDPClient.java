@@ -27,7 +27,7 @@ public class UDPClient {
     public static void main(String[] args) {
 //        String hostname = "djxmmx.net"; port - 17
 //        String hostname = "localhost";
-        String hostname = "194.39.99.4";
+        String hostname = "5.8.39.124";
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
              ObjectOutputStream outputStream = new ObjectOutputStream(out)) {
             UDPClient udpClient = new UDPClient();
@@ -39,7 +39,7 @@ public class UDPClient {
 
             while (true) {
 //                DatagramPacket request = new DatagramPacket(data, data.length, address, 11111);
-                DatagramPacket request = new DatagramPacket(data, data.length, address, 29485);
+                DatagramPacket request = new DatagramPacket(data, data.length, address, 7741);
                 udpClient.socket.send(request);
                 byte[] buffer = new byte[1024];
                 DatagramPacket response = new DatagramPacket(buffer, buffer.length);
