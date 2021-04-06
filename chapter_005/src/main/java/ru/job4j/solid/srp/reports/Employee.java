@@ -1,13 +1,25 @@
 package ru.job4j.solid.srp.reports;
 
+import org.json.JSONPropertyIgnore;
+
+import javax.xml.bind.annotation.*;
 import java.util.Calendar;
 import java.util.Objects;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Employee {
+
+    @XmlAttribute
     private String name;
-    private Calendar hired;
-    private Calendar fired;
+    private transient Calendar hired;
+    private transient Calendar fired;
+    @XmlAttribute
     private double salary;
+
+    public Employee() {
+
+    }
 
     public Employee(String name, Calendar hired, Calendar fired, double salary) {
         this.name = name;
@@ -24,6 +36,7 @@ public class Employee {
         this.name = name;
     }
 
+    @JSONPropertyIgnore
     public Calendar getHired() {
         return hired;
     }
@@ -32,6 +45,7 @@ public class Employee {
         this.hired = hired;
     }
 
+    @JSONPropertyIgnore
     public Calendar getFired() {
         return fired;
     }

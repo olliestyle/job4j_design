@@ -60,9 +60,9 @@ public class ReportEngineTest {
     }
 
     @Test
-    public void whenProgrammersReport() {
+    public void whenHTMLReport() {
         store.add(worker);
-        Report engine = new ReportProgrammers(store);
+        Report engine = new ReportHTML(store);
         StringBuilder expect = new StringBuilder()
                 .append("HTML Format:").append(System.lineSeparator())
                 .append("Name; Hired; Fired; Salary")
@@ -72,5 +72,27 @@ public class ReportEngineTest {
                 .append(worker.getSalary()).append(";")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
+
+    @Test
+    public void whenJSONReport() {
+        store.add(worker);
+        store.add(worker1);
+        Report report = new ReportJSON(store);
+        String expected = "{\"employees\":[{\"name\":\"Ivan\",\"salary\":100},{\"name\":\"Oleg\",\"salary\":200}]}";
+        assertThat(report.generate(em -> true), is(expected));
+    }
+
+    @Test
+    public void whenXMLReport() {
+        store.add(worker);
+        store.add(worker1);
+        Report report = new ReportXML(store);
+        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+                "<employees>\n" +
+                "    <employee name=\"Ivan\" salary=\"100.0\"/>\n" +
+                "    <employee name=\"Oleg\" salary=\"200.0\"/>\n" +
+                "</employees>\n";
+        assertThat(report.generate(em -> true), is(expected));
     }
 }
