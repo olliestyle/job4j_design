@@ -2,8 +2,6 @@ package ru.job4j.solid.lsp.productstorage.store;
 
 import ru.job4j.solid.lsp.productstorage.model.Food;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +19,16 @@ public class Shop implements Storable {
     }
 
     @Override
-    public void put(Food food, long percentage) {
+    public boolean put(Food food, long percentage) {
+        boolean rsl = false;
         if (percentage >= 25 && percentage <= 75) {
             foodList.add(food);
+            rsl = true;
         } else if (percentage > 75 && percentage <= 100) {
             foodList.add(food);
             food.setDiscount(25);
+            rsl = true;
         }
+        return rsl;
     }
 }

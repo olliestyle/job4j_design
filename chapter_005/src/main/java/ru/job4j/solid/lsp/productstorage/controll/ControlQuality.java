@@ -23,10 +23,12 @@ public class ControlQuality {
 
     public void control(Food food) {
         long shelfLife = ChronoUnit.DAYS.between(food.getCreateDate().toLocalDate(), food.getExpiryDate().toLocalDate());
-        long remainedDays = ChronoUnit.DAYS.between( LocalDate.now(), food.getExpiryDate().toLocalDate());
+        long remainedDays = ChronoUnit.DAYS.between(LocalDate.now(), food.getExpiryDate().toLocalDate());
         long percentage = 100 - (remainedDays * 100 / shelfLife);
         for (Storable storable: storables) {
-            storable.put(food, percentage);
+            if (storable.put(food, percentage)) {
+                break;
+            }
         }
     }
 
