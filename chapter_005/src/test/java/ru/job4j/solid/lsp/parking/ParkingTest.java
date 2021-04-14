@@ -7,13 +7,6 @@ import static org.junit.Assert.*;
 public class ParkingTest {
 
     Parking parking = new Parking(5, 5);
-    Car car1 = new Car();
-    Car car2 = new Car();
-    Car car3 = new Car();
-    Truck truck1 = new Truck(2);
-    Truck truck2 = new Truck(2);
-    Truck truck3 = new Truck(3);
-    Truck truck4 = new Truck(4);
 
     @Test(expected = IllegalArgumentException.class)
     public void whenBadTruckSize() {
@@ -22,35 +15,41 @@ public class ParkingTest {
 
     @Test
     public void whenParkFit() {
-        assertTrue(parking.park(car1));
-        assertTrue(parking.park(car2));
-        assertTrue(parking.park(car3));
-        assertTrue(parking.park(truck1));
-        assertTrue(parking.park(truck3));
-        assertTrue(parking.park(truck2));
+        assertTrue(parking.park(new Car()));
+        assertTrue(parking.park(new Car()));
+        assertTrue(parking.park(new Car()));
+        assertTrue(parking.park(new Truck(2)));
+        assertTrue(parking.park(new Truck(3)));
+        assertTrue(parking.park(new Truck(2)));
         assertArrayEquals(new int[] {1, 1, 1, 2, 2}, parking.getCarAmountSpace());
         assertArrayEquals(new int[] {2, 2, 3, 3, 3}, parking.getTruckAmountSpace());
     }
 
     @Test
     public void whenParkDontFit() {
-        assertTrue(parking.park(car1));
-        assertTrue(parking.park(car2));
-        assertTrue(parking.park(car3));
-        assertTrue(parking.park(truck1));
-        assertTrue(parking.park(truck2));
-        assertTrue(parking.park(truck3));
-        assertFalse(parking.park(truck4));
+        assertTrue(parking.park(new Car()));
+        assertTrue(parking.park(new Car()));
+        assertTrue(parking.park(new Car()));
+        assertTrue(parking.park(new Truck(2)));
+        assertTrue(parking.park(new Truck(3)));
+        assertTrue(parking.park(new Truck(2)));
+        assertFalse(parking.park(new Truck(2)));
     }
 
     @Test
     public void whenParkingFullFree() {
+        Car car1 = new Car();
+        Car car2 = new Car();
+        Car car3 = new Car();
+        Truck truck1 = new Truck(2);
+        Truck truck2 = new Truck(2);
+        Truck truck3 = new Truck(3);
         assertTrue(parking.park(car1));
         assertTrue(parking.park(car2));
         assertTrue(parking.park(car3));
         assertTrue(parking.park(truck1));
-        assertTrue(parking.park(truck2));
         assertTrue(parking.park(truck3));
+        assertTrue(parking.park(truck2));
         assertTrue(parking.leaveParking(car1));
         assertTrue(parking.leaveParking(car2));
         assertTrue(parking.leaveParking(car3));
