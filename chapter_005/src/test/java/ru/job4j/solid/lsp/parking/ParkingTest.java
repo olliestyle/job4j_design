@@ -7,17 +7,17 @@ import static org.junit.Assert.*;
 public class ParkingTest {
 
     Parking parking = new Parking(5, 5);
-    Car car1 = new Car("Ivan");
-    Car car2 = new Car("Oleg");
-    Car car3 = new Car("Egor");
-    Truck truck1 = new Truck(2, "Semen");
-    Truck truck2 = new Truck(2, "Pavel");
-    Truck truck3 = new Truck(3, "Dima");
-    Truck truck4 = new Truck(4, "Alex");
+    Car car1 = new Car();
+    Car car2 = new Car();
+    Car car3 = new Car();
+    Truck truck1 = new Truck(2);
+    Truck truck2 = new Truck(2);
+    Truck truck3 = new Truck(3);
+    Truck truck4 = new Truck(4);
 
     @Test(expected = IllegalArgumentException.class)
     public void whenBadTruckSize() {
-        Truck truck = new Truck(-1, "Kirill");
+        Truck truck = new Truck(-1);
     }
 
     @Test
@@ -26,8 +26,8 @@ public class ParkingTest {
         assertTrue(parking.park(car2));
         assertTrue(parking.park(car3));
         assertTrue(parking.park(truck1));
-        assertTrue(parking.park(truck2));
         assertTrue(parking.park(truck3));
+        assertTrue(parking.park(truck2));
         assertArrayEquals(new int[] {1, 1, 1, 2, 2}, parking.getCarAmountSpace());
         assertArrayEquals(new int[] {2, 2, 3, 3, 3}, parking.getTruckAmountSpace());
     }
@@ -59,11 +59,5 @@ public class ParkingTest {
         assertTrue(parking.leaveParking(truck3));
         assertArrayEquals(new int[] {0, 0, 0, 0, 0}, parking.getCarAmountSpace());
         assertArrayEquals(new int[] {0, 0, 0, 0, 0}, parking.getTruckAmountSpace());
-    }
-
-    @Test
-    public void whenNeedToRecogniseOwner() {
-        assertTrue(parking.park(truck3));
-        assertEquals("Dima", parking.getTruck(1).getOwner());
     }
 }
