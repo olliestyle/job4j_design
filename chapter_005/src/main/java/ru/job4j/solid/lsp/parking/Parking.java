@@ -1,5 +1,6 @@
 package ru.job4j.solid.lsp.parking;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Parking implements VehicleStorage {
@@ -67,22 +68,16 @@ public class Parking implements VehicleStorage {
         int fromFreeCar = indexFreeSpaceExist(carAmountSpace, size);
         if (size == 1) {
             if (fromFreeCar != -1) {
-                for (int i = fromFreeCar; i < size + fromFreeCar; i++) {
-                    carAmountSpace[i] = size;
-                }
+                Arrays.fill(carAmountSpace, fromFreeCar, size + fromFreeCar, size);
                 rsl = true;
             }
         } else if (size >= 2) {
             int fromFreeTruck = indexFreeSpaceExist(truckAmountSpace, size);
             if (fromFreeTruck != -1) {
-                for (int i = fromFreeTruck; i < size + fromFreeTruck; i++) {
-                    truckAmountSpace[i] = size;
-                }
+                Arrays.fill(truckAmountSpace, fromFreeTruck, size + fromFreeTruck, size);
                 rsl = true;
             } else if (fromFreeCar != -1) {
-                for (int i = fromFreeCar; i < size + fromFreeCar; i++) {
-                    carAmountSpace[i] = size;
-                }
+                Arrays.fill(carAmountSpace, fromFreeCar, size + fromFreeCar, size);
                 rsl = true;
             }
         }
@@ -116,7 +111,24 @@ public class Parking implements VehicleStorage {
 
     @Override
     public boolean leaveParking(Vehicle vehicle) {
+        boolean rsl = false;
         int size = vehicle.size();
-        return false;
+        for (int i = 0; i < truckAmountSpace.length; i++) {
+            if (truckAmountSpace[i] == size) {
+                for (int j = i; j < i + size; j++) {
+                    truckAmountSpace[j] = 0;
+                }
+                rsl = true;
+                break;
+            } else if (carAmountSpace[i] == size) {
+                for (int j = i; j < i + size; j++) {
+                    carAmountSpace[j] = 0;
+                }
+                rsl = true;
+                break;
+            }
+        }
+        return rsl;
     }
+
 }

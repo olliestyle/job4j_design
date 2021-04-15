@@ -54,8 +54,8 @@ public class ParkingTest {
         assertTrue(parking.leaveParking(car2));
         assertTrue(parking.leaveParking(car3));
         assertTrue(parking.leaveParking(truck1));
-        assertTrue(parking.leaveParking(truck2));
         assertTrue(parking.leaveParking(truck3));
+        assertTrue(parking.leaveParking(truck2));
         assertArrayEquals(new int[] {0, 0, 0, 0, 0}, parking.getCarAmountSpace());
         assertArrayEquals(new int[] {0, 0, 0, 0, 0}, parking.getTruckAmountSpace());
     }
