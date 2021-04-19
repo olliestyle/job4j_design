@@ -7,10 +7,20 @@ public class Task {
 
     private String paragraph;
     private List<Task> subTasks;
+    private UserAction userAction;
 
-    public Task(String paragraph) {
+    public Task(String paragraph, UserAction userAction) {
         this.paragraph = paragraph;
+        this.userAction = userAction;
         subTasks = new ArrayList<>();
+    }
+
+    public UserAction getUserAction() {
+        return userAction;
+    }
+
+    public String getParagraph() {
+        return paragraph;
     }
 
     public List<Task> getSubTasks() {
