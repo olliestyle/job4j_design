@@ -31,4 +31,10 @@ public class Shop implements Storable {
         }
         return rsl;
     }
+
+    @Override
+    public boolean removeAll(List<Food> foodList) {
+        return this.foodList.removeAll(foodList);
+    }
+
 }

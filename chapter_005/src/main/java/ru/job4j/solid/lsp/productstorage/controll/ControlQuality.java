@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -32,6 +33,18 @@ public class ControlQuality {
         }
     }
 
+    public void resort() {
+        List<Food> allFood = new ArrayList<>();
+        for (Storable storable: storables) {
+            List<Food> toResort = storable.findAll();
+            allFood.addAll(toResort);
+            storable.removeAll(toResort);
+        }
+        for (Food food: allFood) {
+            control(food);
+        }
+    }
+
     public static void main(String[] args) {
         WareHouse wareHouse = new WareHouse();
         Shop shop = new Shop();
@@ -47,5 +60,6 @@ public class ControlQuality {
         controlQuality.control(egg);
         controlQuality.control(sausage);
         controlQuality.control(cheese);
+        controlQuality.resort();
     }
 }

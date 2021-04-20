@@ -22,4 +22,11 @@ public class Trash implements Storable {
     public boolean put(Food food, long percentage) {
         return percentage > 100 && foodList.add(food);
     }
+
+    @Override
+    public boolean removeAll(List<Food> foodList) {
+        return this.foodList.removeAll(foodList);
+    }
+
+
 }
