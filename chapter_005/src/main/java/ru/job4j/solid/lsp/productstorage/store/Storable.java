@@ -7,5 +7,5 @@ import java.util.List;
 public interface Storable {
     List<Food> findAll();
     boolean put(Food food, long percentage);
-    boolean removeAll(List<Food> foodList);
+    void clear();
 }

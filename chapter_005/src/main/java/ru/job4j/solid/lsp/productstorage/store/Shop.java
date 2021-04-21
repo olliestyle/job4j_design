@@ -33,8 +33,8 @@ public class Shop implements Storable {
     }
 
     @Override
-    public boolean removeAll(List<Food> foodList) {
-        return this.foodList.removeAll(foodList);
+    public void clear() {
+        this.foodList.clear();
     }
 
 }

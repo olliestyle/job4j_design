@@ -38,7 +38,7 @@ public class ControlQuality {
         for (Storable storable: storables) {
             List<Food> toResort = storable.findAll();
             allFood.addAll(toResort);
-            storable.removeAll(toResort);
+            storable.clear();
         }
         for (Food food: allFood) {
             control(food);
