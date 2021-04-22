@@ -12,19 +12,20 @@ public class TicTacToeApp {
         Scanner scanner = new Scanner(System.in);
         int size = scanner.nextInt();
         ticTacToeApp.init(new Board(size),
-                          new Logic(size),
-                          new HumanPlayer[]{new HumanPlayer("X"), new HumanPlayer("O")},
-                          scanner);
+                          new ConsoleBoardDrawer(size),
+                          new Logic(),
+                          new ConsolePlayer[]{new ConsolePlayer(Mark.MARKX), new ConsolePlayer(Mark.MARKO)},
+                          new ConsoleInput());
     }
 
-    public void init(BoardDrawer boardDrawer, Logic logic, Player[] players, Scanner scanner) {
+    public void init(Board board, BoardDrawer boardDrawer, Logic logic, Player[] players, Input input) {
         boolean continueGame = true;
         System.out.println("");
         while (continueGame) {
             for (Player player : players) {
-                player.makeMove(scanner, logic);
-                boardDrawer.draw(logic.getCells());
-                continueGame = logic.isWin();
+                player.makeMove(input, board);
+                boardDrawer.draw(board);
+                continueGame = logic.isWin(board);
             }
         }
     }

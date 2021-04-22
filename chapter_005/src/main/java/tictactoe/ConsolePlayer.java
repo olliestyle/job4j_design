@@ -1,12 +1,10 @@
 package tictactoe;
 
-import java.util.Scanner;
+public class ConsolePlayer implements Player{
 
-public class HumanPlayer implements Player{
+    private Mark mark;
 
-    private String mark;
-
-    public HumanPlayer(String mark) {
+    public ConsolePlayer(Mark mark) {
         this.mark = mark;
     }
 
@@ -20,16 +18,15 @@ public class HumanPlayer implements Player{
     }
 
     @Override
-    public void makeMove(Scanner scanner, Logic logic) {
+    public void makeMove(Input input, Board board) {
         Cell cell = null;
         boolean flag = false;
         do {
-            System.out.println("В какую строку игрок хочет поставить " + this.mark + " ?");
-            int row = scanner.nextInt();
-            System.out.println("В какую колонку игрок хочет поставить " + this.mark + " ?");
-            int column = scanner.nextInt();
-            if (fitBorders(row, column, logic.getCells().length)) {
-                cell = logic.getCells()[row][column];
+            input.setMarkCoordinates(mark);
+            int row = input.getRow();
+            int column = input.getColumn();
+            if (fitBorders(row, column, board.getCells().length)) {
+                cell = board.getCells()[row][column];
                 flag = setMark(cell);
                 if (!flag) {
                     System.out.println("Клетка занята, попробуйте поставить в другую");

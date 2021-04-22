@@ -1,25 +1,19 @@
 package tictactoe;
 
-public class Board implements BoardDrawer {
-    private int size;
+public class Board {
+
+    private Cell[][] cells;
 
     public Board(int size) {
-        this.size = size;
-    }
-
-    @Override
-    public int getSize() {
-        return size;
-    }
-
-    @Override
-    public void draw(Cell[][] cells) {
+        cells = new Cell[size][size];
         for (int i = 0; i < size; i++) {
-            System.out.println();
             for (int j = 0; j < size; j++) {
-                System.out.print(cells[i][j].getMark() + "  ");
+                cells[i][j] = new Cell(i, j);
             }
         }
-        System.out.println();
+    }
+
+    public Cell[][] getCells() {
+        return cells;
     }
 }
